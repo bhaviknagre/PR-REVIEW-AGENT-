@@ -1,0 +1,8 @@
+"""Parse release tags such as v3.1."""
+import re
+
+_TAG = re.compile(r"^v(\d+)\.(\d+)")
+
+
+def major(tag):
+    return int(_TAG.match(tag).group(1))

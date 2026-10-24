@@ -1,0 +1,20 @@
+{
+  "id": "quadratic_loop",
+  "title": "Membership test on a list inside a loop",
+  "clean": false,
+  "failing_tests": 0,
+  "findings": [
+    {
+      "category": "performance",
+      "path": "dedupe.py",
+      "anchor": "if item not in result",
+      "detector": "llm",
+      "keywords": [
+        "quadratic",
+        "set",
+        "o(n"
+      ],
+      "line": 7
+    }
+  ]
+}

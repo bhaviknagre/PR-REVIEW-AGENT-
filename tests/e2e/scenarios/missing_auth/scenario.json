@@ -1,0 +1,20 @@
+{
+  "id": "missing_auth",
+  "title": "Destructive handler with no authorization check",
+  "clean": false,
+  "failing_tests": 0,
+  "findings": [
+    {
+      "category": "security",
+      "path": "admin_api.py",
+      "anchor": "USERS.pop(user_id",
+      "detector": "llm",
+      "keywords": [
+        "auth",
+        "admin",
+        "permission"
+      ],
+      "line": 12
+    }
+  ]
+}

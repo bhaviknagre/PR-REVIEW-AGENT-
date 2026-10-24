@@ -1,0 +1,86 @@
+# Usage: cp .env.example .env && edit && ./docker/sandbox/build.sh && docker compose up -d --build
+x-app: &app
+  build: .
+  image: pr-review:local
+  env_file:
+    - {path: .env, required: false}
+  environment:
+    # Compose-internal service addresses override whatever .env says.
+    DATABASE_URL: postgresql+psycopg://pr_review:${POSTGRES_PASSWORD:-}@postgres:5432/pr_review
+    REDIS_URL: redis://redis:6379
+  extra_hosts:
+    - "host.docker.internal:host-gateway"  # reach Ollama on the host (needed on Linux)
+  restart: unless-stopped
+
+services:
+  postgres:
+    image: postgres:16.6-alpine@sha256:1d04b9ba1d4996401f2552b51beda8187f175c0645c091e4781134fc9c9a3eef
+    environment:
+      POSTGRES_USER: pr_review
+      POSTGRES_DB: pr_review
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-}
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pr_review -d pr_review"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+    deploy: {resources: {limits: {cpus: "1", memory: 1g}}}
+
+  redis:
+    image: redis:7.4-alpine@sha256:57e4255cc971b1c8d6f8a6ca283ac01bc3ecdd914273ef6bfaede87aaecd6541
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes: [redisdata:/data]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+    deploy: {resources: {limits: {cpus: "0.5", memory: 512m}}}
+
+  migrate:
+    <<: *app
+    command: ["migrate"]
+    healthcheck: {disable: true}  # image HEALTHCHECK is api-only
+    restart: "no"
+    depends_on:
+      postgres: {condition: service_healthy}
+
+  api:
+    <<: *app
+    command: ["api"]
+    ports: ["8000:8000"]
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+    deploy: {resources: {limits: {cpus: "1", memory: 512m}}}
+
+  worker:
+    <<: *app
+    command: ["worker"]
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+    # SECURITY TRADE-OFF: the worker starts sandbox containers through the host Docker daemon,
+    # so access to this socket is root-equivalent on the daemon's host. It is mounted ONLY here,
+    # never in api. Production: use rootless Docker (point the mount at its socket) or gVisor
+    # (runsc) as the daemon runtime. The socket cannot be mounted read-only in any meaningful way
+    # (":ro" does not restrict API calls), so it is mounted plain.
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    # Set DOCKER_GID to `stat -c %g /var/run/docker.sock` (Linux) / the socket's group; the default
+    # 65534 grants no access, and the healthcheck below then shows the worker unhealthy.
+    group_add: ["${DOCKER_GID:-65534}"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import docker; docker.from_env().ping()"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    deploy: {resources: {limits: {cpus: "2", memory: 2g}}}
+
+volumes:
+  pgdata:
+  redisdata:

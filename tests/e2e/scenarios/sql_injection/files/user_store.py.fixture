@@ -1,0 +1,11 @@
+"""User lookup helpers backed by sqlite."""
+import sqlite3
+
+
+def connect(path=":memory:"):
+    return sqlite3.connect(path)
+
+
+def find_user(conn, name):
+    cur = conn.execute(f"SELECT id, name FROM users WHERE name = '{name}'")
+    return cur.fetchone()

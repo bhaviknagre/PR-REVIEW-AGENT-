@@ -1,0 +1,19 @@
+{
+  "id": "go_shell_exec",
+  "title": "Shell command assembled from a request value (Go)",
+  "clean": false,
+  "failing_tests": 0,
+  "findings": [
+    {
+      "category": "security",
+      "path": "backup.go",
+      "anchor": "exec.Command(\"sh\"",
+      "detector": "static",
+      "keywords": [
+        "shell",
+        "command"
+      ],
+      "line": 6
+    }
+  ]
+}

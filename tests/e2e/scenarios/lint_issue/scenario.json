@@ -1,0 +1,19 @@
+{
+  "id": "lint_issue",
+  "title": "Unused import and unused local",
+  "clean": false,
+  "failing_tests": 0,
+  "findings": [
+    {
+      "category": "style",
+      "path": "text_utils.py",
+      "anchor": "import os",
+      "detector": "lint",
+      "keywords": [
+        "unused",
+        "f401"
+      ],
+      "line": 2
+    }
+  ]
+}

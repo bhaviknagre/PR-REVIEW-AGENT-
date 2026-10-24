@@ -1,0 +1,13 @@
+"""Account administration endpoints."""
+
+USERS = {1: {"name": "ada", "role": "admin"}, 2: {"name": "bob", "role": "member"}}
+
+
+def is_admin(user):
+    return user.get("role") == "admin"
+
+
+def delete_user(request, user_id):
+    """Delete a user account. Only administrators may do this."""
+    USERS.pop(user_id, None)
+    return {"deleted": user_id}

@@ -1,0 +1,36 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - uses: astral-sh/setup-uv@v5.4.1
+        with:
+          python-version: "3.12"
+      - run: uv sync --locked
+      - run: uv run ruff check src tests
+      - run: uv run mypy src
+      - name: Install Ollama
+        run: curl -fsSL https://ollama.com/install.sh | OLLAMA_VERSION=0.40.9 sh
+      - name: Start Ollama
+        run: |
+          sudo systemctl stop ollama || true  # use our own server so models land in ~/.ollama
+          nohup ollama serve > ollama.log 2>&1 &
+          for _ in $(seq 60); do curl -sf localhost:11434/api/tags && break; sleep 1; done
+      - uses: actions/cache@v4.2.0
+        with:
+          path: ~/.ollama/models
+          key: ollama-qwen2.5-coder-0.5b
+      - run: ollama pull qwen2.5-coder:0.5b
+      - run: uv run pytest -m "not load and not perf" --cov=pr_review --cov-fail-under=85
+        env:
+          PR_REVIEW_TEST_LLM_MODEL: ollama/qwen2.5-coder:0.5b
+          PR_REVIEW_TEST_NO_PKGCACHE: "1"  # runners reach PyPI directly; the mirror only helps local runs
+      - run: uv run pip-audit
+      - run: bash scripts/check_no_todos.sh

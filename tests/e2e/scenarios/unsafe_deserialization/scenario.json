@@ -1,0 +1,28 @@
+{
+  "id": "unsafe_deserialization",
+  "title": "yaml.load and pickle.loads on untrusted input",
+  "clean": false,
+  "failing_tests": 0,
+  "findings": [
+    {
+      "category": "security",
+      "path": "config_loader.py",
+      "anchor": "return yaml.load(text)",
+      "detector": "static",
+      "keywords": [
+        "yaml"
+      ],
+      "line": 8
+    },
+    {
+      "category": "security",
+      "path": "config_loader.py",
+      "anchor": "return pickle.loads(blob)",
+      "detector": "static",
+      "keywords": [
+        "pickle"
+      ],
+      "line": 12
+    }
+  ]
+}

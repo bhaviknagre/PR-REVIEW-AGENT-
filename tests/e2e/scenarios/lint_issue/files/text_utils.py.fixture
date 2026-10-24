@@ -1,0 +1,8 @@
+"""String helpers."""
+import os
+import sys
+
+
+def shout(text):
+    length = len(text)
+    return text.upper()

@@ -1,0 +1,20 @@
+{
+  "id": "none_dereference",
+  "title": "Regex match used without checking for None",
+  "clean": false,
+  "failing_tests": 1,
+  "findings": [
+    {
+      "category": "correctness",
+      "path": "version_tags.py",
+      "anchor": "return int(_TAG.match",
+      "detector": "llm",
+      "keywords": [
+        "none",
+        "match",
+        "attributeerror"
+      ],
+      "line": 8
+    }
+  ]
+}

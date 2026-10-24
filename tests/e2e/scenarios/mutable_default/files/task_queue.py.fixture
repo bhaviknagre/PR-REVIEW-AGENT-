@@ -1,0 +1,6 @@
+"""Tiny in-process task queue."""
+
+
+def add_task(task, queue=[]):
+    queue.append(task)
+    return queue

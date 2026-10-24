@@ -1,0 +1,21 @@
+{
+  "id": "n_plus_one",
+  "title": "One query per customer inside a loop",
+  "clean": false,
+  "failing_tests": 0,
+  "findings": [
+    {
+      "category": "performance",
+      "path": "order_report.py",
+      "anchor": "rows = conn.execute",
+      "detector": "llm",
+      "keywords": [
+        "query",
+        "loop",
+        "n+1",
+        "batch"
+      ],
+      "line": 7
+    }
+  ]
+}

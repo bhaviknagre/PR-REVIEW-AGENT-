@@ -1,0 +1,19 @@
+{
+  "id": "sql_injection",
+  "title": "SQL built with an f-string from caller input",
+  "clean": false,
+  "failing_tests": 0,
+  "findings": [
+    {
+      "category": "security",
+      "path": "user_store.py",
+      "anchor": "conn.execute(f\"SELECT",
+      "detector": "static",
+      "keywords": [
+        "sql",
+        "injection"
+      ],
+      "line": 10
+    }
+  ]
+}

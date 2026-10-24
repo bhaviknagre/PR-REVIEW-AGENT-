@@ -1,0 +1,18 @@
+{
+  "id": "js_eval",
+  "title": "eval of caller supplied expression (JavaScript)",
+  "clean": false,
+  "failing_tests": 0,
+  "findings": [
+    {
+      "category": "security",
+      "path": "calc_service.js",
+      "anchor": "return eval(expression)",
+      "detector": "static",
+      "keywords": [
+        "eval"
+      ],
+      "line": 3
+    }
+  ]
+}

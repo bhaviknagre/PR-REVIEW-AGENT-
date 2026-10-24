@@ -1,0 +1,12 @@
+"""Load user supplied settings and cached sessions."""
+import pickle
+
+import yaml
+
+
+def load_settings(text):
+    return yaml.load(text)
+
+
+def load_session(blob):
+    return pickle.loads(blob)

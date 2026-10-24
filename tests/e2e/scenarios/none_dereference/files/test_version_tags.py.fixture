@@ -1,0 +1,9 @@
+from version_tags import major
+
+
+def test_major_of_release_tag():
+    assert major("v3.1") == 3
+
+
+def test_major_of_unparseable_tag_is_none():
+    assert major("latest") is None

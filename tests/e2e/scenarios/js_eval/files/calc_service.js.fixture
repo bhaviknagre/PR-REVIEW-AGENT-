@@ -1,0 +1,6 @@
+// Evaluate arithmetic typed into the dashboard.
+function evaluate(expression) {
+  return eval(expression);
+}
+
+module.exports = { evaluate };

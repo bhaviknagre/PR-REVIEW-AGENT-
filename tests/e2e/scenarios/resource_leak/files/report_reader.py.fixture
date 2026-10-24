@@ -1,0 +1,7 @@
+"""Read report files."""
+
+
+def read_lines(path):
+    f = open(path)
+    lines = f.read().splitlines()
+    return lines

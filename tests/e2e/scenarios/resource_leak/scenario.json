@@ -1,0 +1,20 @@
+{
+  "id": "resource_leak",
+  "title": "File handle opened and never closed",
+  "clean": false,
+  "failing_tests": 0,
+  "findings": [
+    {
+      "category": "correctness",
+      "path": "report_reader.py",
+      "anchor": "f = open(path)",
+      "detector": "llm",
+      "keywords": [
+        "close",
+        "leak",
+        "with"
+      ],
+      "line": 5
+    }
+  ]
+}

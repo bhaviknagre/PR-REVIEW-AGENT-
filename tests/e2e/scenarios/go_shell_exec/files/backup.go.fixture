@@ -1,0 +1,7 @@
+package main
+
+import "os/exec"
+
+func archive(name string) ([]byte, error) {
+	return exec.Command("sh", "-c", "tar czf /backups/"+name+".tgz /data").Output()
+}

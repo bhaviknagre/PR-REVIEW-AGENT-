@@ -1,0 +1,20 @@
+{
+  "id": "off_by_one",
+  "title": "Page slice returns one item too many",
+  "clean": false,
+  "failing_tests": 1,
+  "findings": [
+    {
+      "category": "correctness",
+      "path": "pagination.py",
+      "anchor": "end = start + size + 1",
+      "detector": "llm",
+      "keywords": [
+        "off-by-one",
+        "size",
+        "slice"
+      ],
+      "line": 6
+    }
+  ]
+}

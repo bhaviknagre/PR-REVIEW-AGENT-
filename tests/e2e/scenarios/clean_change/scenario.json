@@ -1,0 +1,7 @@
+{
+  "id": "clean_change",
+  "title": "Correct, tested helper with nothing to report",
+  "clean": true,
+  "failing_tests": 0,
+  "findings": []
+}

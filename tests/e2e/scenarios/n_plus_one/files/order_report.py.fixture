@@ -1,0 +1,9 @@
+"""Order totals per customer."""
+
+
+def order_totals(conn, customer_ids):
+    totals = {}
+    for cid in customer_ids:
+        rows = conn.execute("SELECT amount FROM orders WHERE customer_id = ?", (cid,)).fetchall()
+        totals[cid] = sum(r[0] for r in rows)
+    return totals

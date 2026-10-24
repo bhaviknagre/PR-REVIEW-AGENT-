@@ -1,0 +1,13 @@
+"""Thin client for the billing service."""
+import json
+import urllib.request
+
+BASE_URL = "https://billing.internal.invalid/v2"
+BILLING_API_TOKEN = "Zq8vK2mXr9TpL4wB7nYc3HdS"
+
+
+def charge(customer_id, cents):
+    body = json.dumps({"customer": customer_id, "amount": cents}).encode()
+    req = urllib.request.Request(BASE_URL + "/charges", data=body)
+    req.add_header("Authorization", "Bearer " + BILLING_API_TOKEN)
+    return urllib.request.urlopen(req, timeout=10).read()

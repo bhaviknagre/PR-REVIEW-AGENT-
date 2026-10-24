@@ -1,0 +1,11 @@
+"""Slice a list into pages."""
+
+
+def page_items(items, page, size):
+    start = page * size
+    end = start + size + 1
+    return items[start:end]
+
+
+def page_count(total, size):
+    return (total + size - 1) // size
