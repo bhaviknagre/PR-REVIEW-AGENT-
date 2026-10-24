@@ -10,6 +10,9 @@ COPY src ./src
 RUN uv sync --frozen --no-dev --no-editable
 
 FROM python:3.12.8-slim-bookworm@sha256:2199a62885a12290dc9c5be3ca0681d367576ab7bf037da120e564723292a2f0
+# the worker clones PRs with the git CLI
+RUN apt-get update && apt-get install -y --no-install-recommends git ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 RUN useradd --system --uid 10001 --no-create-home --home-dir /nonexistent app
 WORKDIR /app
 COPY --from=build /app/.venv /app/.venv
