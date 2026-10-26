@@ -1,6 +1,6 @@
 # pr-review
 
-**📘 [Setup & Deployment Guide](https://claude.ai/artifact/9nH1FvVXsX2qZFYHFwDSZ8)** · **📖 [Documentation – Getting Started](https://claude.ai/artifact/JFqVfJa48cD7CRGLaEx8PX)**
+**📘 [PR Review Agent - Setup & Deployment Guide](https://bhaviknagre.github.io/pr-review-agent/setup-and-deployment-guide.html)** · **📖 [PR Review Documentation](https://bhaviknagre.github.io/pr-review-agent/technical-documentation.html)**
 
 A self-hosted AI pull-request review agent for GitHub. It receives GitHub App webhooks, checks out the PR, runs linters and the repository's tests inside a locked-down sandbox, asks an LLM to review the diff, and posts a single review back to the pull request.
 
