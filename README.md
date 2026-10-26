@@ -1,5 +1,7 @@
 # pr-review
 
+**📘 [Setup & Deployment Guide](https://claude.ai/artifact/9nH1FvVXsX2qZFYHFwDSZ8)** · **📖 [Documentation – Getting Started](https://claude.ai/artifact/JFqVfJa48cD7CRGLaEx8PX)**
+
 A self-hosted AI pull-request review agent for GitHub. It receives GitHub App webhooks, checks out the PR, runs linters and the repository's tests inside a locked-down sandbox, asks an LLM to review the diff, and posts a single review back to the pull request.
 
 The LLM layer is [LiteLLM](https://github.com/BerriAI/litellm). The default is a free local [Ollama](https://ollama.com) model; you can switch to any LiteLLM-supported hosted provider by bringing your own key.
